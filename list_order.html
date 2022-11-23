@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practice</title>
+  <style>
+    body {
+      background-color: gray;
+    }
+    ol {
+      background-color: gray;
+      width: 300px;
+      user-select: none;
+      list-style: number;
+    }
+    li {
+      background-color: white;
+      border: 1px solid black;
+      border-bottom: none;
+      display: block;
+      height: 40px;
+      border-bottom: 1px solid black;
+    }
+    .dragging {
+      opacity: 0.5;
+      background-color: orange;
+    }
+    .over {
+      border-top: 2px solid red;
+    }
+  </style>
+</head>
+<body>
+  <ol id="droptarget">
+    <li class="list-item" draggable="true">起床</li>
+    <li class="list-item" draggable="true">朝ごはん</li>
+    <li class="list-item" draggable="true">昼ごはん</li>
+    <li class="list-item" draggable="true">食後のデザート</li>
+    <li class="list-item" draggable="true">食前のデザート</li>
+    <li class="list-item" draggable="true">夜食</li>
+    <li class="list-item" draggable="true">夜ご飯</li>
+    <li class="list-item" draggable="true">就寝</li>
+    <li class="list-item last"></li>
+  </ol>
+  <script>
+    let dragged;
+    const target = document.getElementById("droptarget");
+    document.querySelectorAll(".list-item").forEach(listItem => {
+      listItem.addEventListener("dragstart", event => {
+        dragged = event.target
+        event.target.classList.add("dragging")
+      })
+      listItem.addEventListener("dragend", event => {
+        event.target.classList.remove("dragging")
+      })
+    })
+    target.addEventListener("dragover", event => {
+      event.preventDefault();
+      event.target.classList.add('over')
+    })
+    target.addEventListener("dragleave", event => {
+      event.preventDefault();
+      event.target.classList.remove('over')
+    })
+    target.addEventListener("drop", e => {
+      if (e.target != dragged) {
+        e.preventDefault();
+        e.target.classList.remove('over');
+        target.removeChild(dragged)
+        target.insertBefore(dragged, e.target)
+      }
+    })
+  </script>
+</body>
+</html>
